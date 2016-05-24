@@ -17,7 +17,10 @@ This blueprint will create two files in your *app/shared/* folder
 * app.reducer.ts - contains application root reducer
 
 > Ensures barrel file is present all the way to app root folder.
+
 > Adds barrels to system-config.js
+
+> Bootstraps the store
 
 ### How to use
 
@@ -33,6 +36,7 @@ This blueprint will create two files in a folder you specify
 * _name_.reducer.spec.ts - contains test spec for reducer
 
 > Ensures barrel file is present all the way to app root folder.
+
 > Adds barrels to system-config.js
 
 ### How to use
