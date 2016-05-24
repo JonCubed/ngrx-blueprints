@@ -1,6 +1,7 @@
 const stringUtils = require('ember-cli-string-utils');
 var dynamicPathParser = require('../../utilities/dynamic-path-parser');
 var barrelMgmt = require('../../utilities/ngrx-barrel-management');
+var bootstrapMgmt = require('../../utilities/ngrx-bootstrap-management');
 var path = require('path');
 
 module.exports = {
@@ -36,8 +37,10 @@ module.exports = {
   },
   
   afterInstall: function() {
-    var filePath = path.join(this.project.ngConfig.defaults.sourceDir, 'system-config.ts');
-
+    var systemjsFilePath = path.join(this.project.ngConfig.defaults.sourceDir, 'system-config.ts');
+    var bootstrapFilePath = path.join(this.project.ngConfig.defaults.sourceDir, 'main.ts');
+    var _this = this;
+    
     return barrelMgmt.addBarrelRegistration(
       this, 
       this.generatePath,
@@ -46,6 +49,32 @@ module.exports = {
       this, 
       this.generatePath,
       this.fileName+'.reducer'))
-    .then(barrelMgmt.addBarrelConfig(this, filePath, this.generatePath));
+    .then(barrelMgmt.addBarrelConfig(
+      this, 
+      systemjsFilePath, 
+      this.generatePath
+     ))
+    .then(function () {
+      bootstrapMgmt.addModuleMemberImport(
+        _this, 
+        bootstrapFilePath, 
+        ['AppReducer', 'AppStoreInitialState'], 
+        './app/'
+      );
+    })
+    .then(function() {
+      bootstrapMgmt.addStoreProvider(
+        _this, 
+        bootstrapFilePath
+      );
+    })
+    .then(function () {
+      bootstrapMgmt.addModuleImport(
+        _this, 
+        bootstrapFilePath, 
+        'import { provideStore } from \'@ngrx/store\';'
+      );
+    })
+    ;
   }
 }
