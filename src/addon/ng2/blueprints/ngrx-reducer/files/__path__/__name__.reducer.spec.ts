@@ -8,7 +8,7 @@ import {
 import { <%= classifiedModuleName %>Reducer } from './<%= fileName %>.reducer';
 
 describe('<%= classifiedModuleName %>', () => {
-  it('should create an instance', () => {
-    expect(new <%= classifiedModuleName %>Reducer()).toBeTruthy();
+  it('should exist', () => {
+    expect(<%= classifiedModuleName %>Reducer).toBeTruthy();
   });
 });
